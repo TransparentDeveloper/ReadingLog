@@ -268,8 +268,8 @@ const isStudent = (input: unknown): input is Student =>
   'score' in input
 
 /* 교내 구성원 모두에게, 공지하기 */
-const noticeAll = (message:string, target: Member | Teacher) => {
-  if(isMember(target)){
+const noticeAll = (message:string, target: Student | Teacher) => {
+  if(isStudent(target)){
     console.log("학생 여러분, " + message)
   }
   else{
