@@ -4,7 +4,7 @@
 
 리액트 애플리케이션은 부모 컴포넌트와 자식 컴포넌트로 이뤄진 트리 구조를 갖고 있다.
 
-컴포넌트 의 깊이가 깊어질 수록, prop 을 전달하기도, 사용하기도 힘들어진다.
+컴포넌트 의 깊이가 깊어질 수록, props 을 전달하기도, 사용하기도 힘들어진다.
 
 이를 **props 내려주기 (props drilling)** 이라고 한다.
 
@@ -45,6 +45,42 @@ const ChildComponent = () => {
 이를 사용하는 컴포넌트는 `<Context.Provider/>` 로 감싸져 있어야 하고, 해당 Provider 에서 명시된 값을 받을 수 있다.
 
 같은 Context 에 대해 Provider 가 여러개 라면, 가장 가까운 Provider 의 값을 받는다.
+
+```tsx
+// 예시)
+// 가장 가까운 Provider 값에 접근할 수 있다.
+
+type Member = {
+  name: string
+  age: number
+}
+type Admin = {
+  name: string
+  role: string
+}
+
+
+const MemberContext = createContext<Member|null>(null)
+const AdminContext = createContext<Admin|null>(null)
+
+const ParentComponent = () => {
+  return (
+    <MemberContext.Provider value={{ name: 'yunshin', age: 20, }}>
+      <AdminContext.Provider value={{ name: 'jeff', role: 'CTO' }}>
+        <ChildComponent/>
+      </AdminContext.Provider>
+    </MemberContext.Provider>
+  )
+}
+
+const ChildComponent = () => {
+  const {name} = useContext(Context)
+  console.log(name) // ✅ 정상출력: jeff
+  return (
+    <p>{name}</p> 
+  )
+}
+```
 
 ### 존재하지 않는 context 를 호출할 경우에 대한 에러 처리
 
