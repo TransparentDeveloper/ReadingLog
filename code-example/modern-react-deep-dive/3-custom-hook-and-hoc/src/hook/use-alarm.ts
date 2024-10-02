@@ -1,30 +1,29 @@
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from 'react'
 
-export const useAlarm = (ms:number) => {
+export const useAlarm = (ms: number) => {
   const [ring, setRing] = useState(0)
   const [isStart, setIsStart] = useState(false)
-  
-  useEffect(() => {
 
+  useEffect(() => {
     if (!isStart) return
-    
-    const timeoutId = setInterval(() => { 
-      setRing((prev) => prev + 1)  
+
+    const timeoutId = setInterval(() => {
+      setRing((prev) => prev + 1)
     }, ms)
-    
+
     return () => {
       clearInterval(timeoutId)
     }
   }, [isStart, ms])
 
-  const alarmStart = useCallback(() => { 
+  const alarmStart = useCallback(() => {
     setIsStart(true)
   }, [])
-  
+
   const alarmReset = useCallback(() => {
     setIsStart(false)
     setRing(0)
-  },[])
-  
-  return {ring, alarmStart, alarmReset}
+  }, [])
+
+  return { ring, alarmStart, alarmReset }
 }
